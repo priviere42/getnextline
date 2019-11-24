@@ -6,7 +6,7 @@
 /*   By: priviere <priviere@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 12:43:11 by priviere     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/19 16:24:12 by priviere    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/24 17:54:31 by priviere    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -62,10 +62,7 @@ int			ft_read_fd(int fd, char *buf, char **rest, char **line)
 		if (check_newline(&*rest, line))
 		{
 			free(buf);
-            if (ret > 0)
-                return (1);
-            else
-                return (0);
+            return (1);
         }
 	}
 	free(buf);
@@ -83,13 +80,15 @@ Quand on a fini de lire le fichier, on check la valeur de ret.
  */
 int			get_next_line(int fd, char **line)
 {
-	static char		*rest;
+	static char		*rest = NULL;
 	char			*buf;
 	int				ret;
+	char			*null;
 
+	null = NULL;
 	if (!rest)
 	{
-		rest = ft_strdup("", &rest);
+		rest = ft_strdup("", &null);
 		*line = ft_strdup("", &rest);
 		free(*line);
 	}
@@ -106,15 +105,12 @@ int			get_next_line(int fd, char **line)
 		if (!ret && *line)
 		{
 			*line = ft_strdup("", &rest);
-	//		free(rest);
 			return (0);
 		}
 		return (1);
 	}
-	// on rentre dans ce cas si le fichier est vide
 	if (!rest)
 	{
-		rest = NULL;
 		*line = ft_strdup("", &rest);
 		return (0);
 	}
