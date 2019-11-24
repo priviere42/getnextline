@@ -6,7 +6,7 @@
 /*   By: priviere <priviere@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/03 17:57:48 by priviere     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/24 17:47:55 by priviere    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/24 18:31:23 by priviere    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -45,6 +45,8 @@ char	*ft_strdup(const char *s1, char **rest)
 	int		i;
 
 	i = ft_strlen(s1);
+	if (!*rest)
+		*rest = NULL;
 	if (*rest && s1 == *rest)
 		return (*rest);
 	if (!(src = (char *)malloc(sizeof(char) * (i + 1))))
