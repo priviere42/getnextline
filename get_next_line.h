@@ -6,13 +6,13 @@
 /*   By: priviere <priviere@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 12:54:57 by priviere     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/29 17:08:33 by priviere    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/29 17:20:18 by priviere    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # include <string.h>
 # include <stdlib.h>

@@ -6,14 +6,14 @@
 /*   By: priviere <priviere@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/03 17:57:48 by priviere     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/29 17:08:14 by priviere    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/29 17:19:41 by priviere    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_strlen(const char *s)
+int		ft_strlen(const char *s)
 {
 	int len;
 
