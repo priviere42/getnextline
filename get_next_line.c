@@ -81,8 +81,7 @@ int			get_next_line(int fd, char **line)
 	int				ret;
 	int 			value;
 
-	buf = NULL;
-	if (fd < 0 || read(fd, buf, 0) < 0)
+	if (!line || fd < 0 || read(fd, rest, 0) < 0)
 	{
 		*line = ft_strdup("", &rest);
 		return (-1);
@@ -98,38 +97,41 @@ int			get_next_line(int fd, char **line)
 			return (1);
     if (!(buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1)))
         return (-1);
+	value = 0;
+	while (value < BUFFER_SIZE)
+		buf[value++] = '\0';
 	ret = ft_read_fd(fd, buf, &rest, line);
 	value = ft_call_reading(ret, &rest, line);
 	return (value);
 }
 
-// #include <sys/stat.h>
-// #include <fcntl.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
-// void		ft_putendl(char const *s)
-// {
-// 	if (s != NULL)
-// 	{
-// 		write(1, s, ft_strlen(s));
-// 		write(1, "\n", 1);
-// 	}
-// }
+void		ft_putendl(char const *s)
+{
+	if (s != NULL)
+	{
+		write(1, s, ft_strlen(s));
+		write(1, "\n", 1);
+	}
+}
 	
-// int			main()
-// {
-//     int fd;	
-// 	int get = 1;
-// 	int i = 4;
-//     char *dest = NULL;
+int			main()
+{
+    int fd;	
+	int get = 1;
+	int i = 4;
+    char *dest = NULL;
 
-//     fd = open("file", O_RDONLY);
-// 	while (i > 0)
-// 	{
-// 		get = get_next_line(fd, &dest);
-// 		printf("Retour de fonction : %d\n", get);
-// 	    ft_putendl(dest);
-// 		free(dest);
-// 		i--;
-// 	}
-// 	close(fd);
-// }
+    fd = open("file", O_RDONLY);
+	while (i > 0)
+	{
+		get = get_next_line(fd, &dest);
+		printf("Retour de fonction : %d\n", get);
+	    ft_putendl(dest);
+		free(dest);
+		i--;
+	}
+	close(fd);
+}
