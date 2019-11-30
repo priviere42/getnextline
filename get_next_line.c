@@ -6,7 +6,7 @@
 /*   By: priviere <priviere@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 12:43:11 by priviere     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/30 13:54:54 by priviere    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/30 14:00:02 by priviere    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -92,7 +92,6 @@ int			ft_call_reading(int ret, char **rest, char **line)
 		return (free_all(rest, NULL, NULL));
 	free(*rest);
 	*rest = NULL;
-	free(*line);
 	return (0);
 }
 
