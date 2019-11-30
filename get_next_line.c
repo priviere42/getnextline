@@ -6,23 +6,37 @@
 /*   By: priviere <priviere@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 12:43:11 by priviere     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/29 17:38:09 by priviere    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/30 13:54:54 by priviere    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int			check_newline(char **rest, char **line)
+int		free_all(char **rest, char *tmp, char *buf)
+{
+	if (*rest)
+		free(*rest);
+	if (tmp)
+		free(tmp);
+	if (buf)
+		free(buf);
+	return (-1);
+}
+
+int			check_newline(char **rest, char **line, char *buf)
 {
 	char	*tmp;
 
 	if (!(ft_strchr(*rest, '\n')))
 		return (0);
-	tmp = ft_strdup(ft_strchr(*rest, '\n'));
-	*line = ft_strdupn(*rest);
+	if (!(tmp = ft_strdup(ft_strchr(*rest, '\n'))))
+		return (free_all(rest, tmp, buf));
+	if (!(*line = ft_strdupn(*rest)))
+		return (free_all(rest, tmp, buf));
 	free(*rest);
-	*rest = ft_strdup(&tmp[1]);
+	if (!(*rest = ft_strdup(&tmp[1])))
+		return (free_all(rest, tmp, buf));
 	free(tmp);
 	return (1);
 }
@@ -37,15 +51,17 @@ int			ft_read_fd(int fd, char *buf, char **rest, char **line)
 		buf[ret] = '\0';
 		if (*rest)
 		{
-			tmp = ft_strdup(*rest);
+			if (!(tmp = ft_strdup(*rest)))
+				return (free_all(rest, tmp, buf));
 			free(*rest);
-			*rest = ft_strjoin(tmp, buf);
+			if (!(*rest = ft_strjoin(tmp, buf)))
+				return (free_all(rest, tmp, buf));
 			free(tmp);
 		}
-		else
-			*rest = ft_strdup(buf);
-		if (check_newline(&*rest, line))
-			return (1);
+		else if (!(*rest = ft_strdup(buf)))
+			return (free_all(rest, tmp, buf));
+		if ((ret = check_newline(&*rest, line, buf)))
+			return ((ret == -1) ? ret : 1);
 	}
 	return (0);
 }
@@ -56,7 +72,8 @@ int			ft_call_reading(int ret, char **rest, char **line)
 	{
 		if (!ret && *line)
 		{
-			*line = ft_strdup("");
+			if (!(*line = ft_strdup("")))
+				return (free_all(rest, NULL, NULL));
 			free(*rest);
 			*rest = NULL;
 			return (0);
@@ -65,14 +82,17 @@ int			ft_call_reading(int ret, char **rest, char **line)
 	}
 	if (!*rest)
 	{
-		*line = ft_strdup("");
+		if (!(*line = ft_strdup("")))
+			return (free_all(rest, NULL, NULL));
 		free(*rest);
 		*rest = NULL;
 		return (0);
 	}
-	*line = ft_strdup(*rest);
+	if (!(*line = ft_strdup(*rest)))
+		return (free_all(rest, NULL, NULL));
 	free(*rest);
 	*rest = NULL;
+	free(*line);
 	return (0);
 }
 
@@ -84,17 +104,19 @@ int			get_next_line(int fd, char **line)
 	int				value;
 
 	if (!line || fd < 0 || read(fd, rest, 0) < 0 || BUFFER_SIZE < 1)
-		return (-1);
+		return (free_all(&rest, NULL, NULL));
 	if (!rest)
 	{
-		rest = ft_strdup("");
-		*line = ft_strdup("");
+		if (!(rest = ft_strdup("")))
+			return (free_all(&rest, NULL, NULL));
+		if (!(*line = ft_strdup("")))
+			return (free_all(&rest, NULL, NULL));
 		free(*line);
 	}
-	if (check_newline(&rest, line))
-		return (1);
+	if ((ret = check_newline(&rest, line, NULL)))
+		return ((ret == -1) ? ret : 1);
 	if (!(buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1)))
-		return (-1);
+		return (free_all(&rest, NULL, buf));
 	value = 0;
 	ret = ft_read_fd(fd, buf, &rest, line);
 	free(buf);
