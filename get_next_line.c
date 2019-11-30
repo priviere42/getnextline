@@ -6,14 +6,14 @@
 /*   By: priviere <priviere@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 12:43:11 by priviere     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/30 14:01:56 by priviere    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/30 14:03:47 by priviere    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		free_all(char **rest, char *tmp, char *buf)
+int			free_all(char **rest, char *tmp, char *buf)
 {
 	if (*rest)
 		free(*rest);
