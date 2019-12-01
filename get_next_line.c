@@ -6,7 +6,7 @@
 /*   By: priviere <priviere@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 12:43:11 by priviere     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/01 13:48:57 by priviere    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/01 14:30:40 by priviere    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -38,6 +38,8 @@ int			check_newline(char **rest, char **line, char *buf)
 	if (!(*rest = ft_strdup(&tmp[1])))
 		return (free_all(rest, tmp, buf));
 	free(tmp);
+	if (buf)
+		free(buf);
 	return (1);
 }
 
@@ -46,6 +48,8 @@ int			ft_read_fd(int fd, char *buf, char **rest, char **line)
 	int		ret;
 	char	*tmp;
 
+	if (!(buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1)))
+		return (free_all(rest, NULL, buf));
 	while ((ret = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
 		buf[ret] = '\0';
@@ -63,6 +67,7 @@ int			ft_read_fd(int fd, char *buf, char **rest, char **line)
 		if ((ret = check_newline(&*rest, line, buf)))
 			return ((ret == -1) ? ret : 1);
 	}
+	free(buf);
 	return (0);
 }
 
@@ -102,6 +107,7 @@ int			get_next_line(int fd, char **line)
 	int				ret;
 	int				value;
 
+	buf = NULL;
 	if (!line || fd < 0 || read(fd, rest, 0) < 0 || BUFFER_SIZE < 1)
 	{
 		if (!(*line = ft_strdup("")))
@@ -116,13 +122,9 @@ int			get_next_line(int fd, char **line)
 			return (free_all(&rest, NULL, NULL));
 		free(*line);
 	}
-	if ((ret = check_newline(&rest, line, NULL)))
+	if ((ret = check_newline(&rest, line, buf)))
 		return ((ret == -1) ? ret : 1);
-	if (!(buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1)))
-		return (free_all(&rest, NULL, buf));
-	value = 0;
 	ret = ft_read_fd(fd, buf, &rest, line);
-	free(buf);
 	value = ft_call_reading(ret, &rest, line);
 	return (value);
 }
