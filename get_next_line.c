@@ -6,7 +6,7 @@
 /*   By: priviere <priviere@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 12:43:11 by priviere     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/30 14:03:47 by priviere    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/01 13:48:57 by priviere    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -103,7 +103,11 @@ int			get_next_line(int fd, char **line)
 	int				value;
 
 	if (!line || fd < 0 || read(fd, rest, 0) < 0 || BUFFER_SIZE < 1)
+	{
+		if (!(*line = ft_strdup("")))
+			return (free_all(&rest, NULL, NULL));
 		return (free_all(&rest, NULL, NULL));
+	}
 	if (!rest)
 	{
 		if (!(rest = ft_strdup("")))
