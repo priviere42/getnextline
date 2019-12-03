@@ -12,6 +12,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include "stdio.h"
 
 int			free_all(char **rest, char *tmp, char *buf)
 {
@@ -38,8 +39,7 @@ int			check_newline(char **rest, char **line, char *buf)
 	if (!(*rest = ft_strdup(&tmp[1])))
 		return (free_all(rest, tmp, buf));
 	free(tmp);
-	if (buf)
-		free(buf);
+	free(buf);
 	return (1);
 }
 
@@ -64,7 +64,7 @@ int			ft_read_fd(int fd, char *buf, char **rest, char **line)
 		}
 		else if (!(*rest = ft_strdup(buf)))
 			return (free_all(rest, tmp, buf));
-		if ((ret = check_newline(&*rest, line, buf)))
+		if ((ret = check_newline(rest, line, buf)))
 			return ((ret == -1) ? ret : 1);
 	}
 	free(buf);
@@ -73,7 +73,7 @@ int			ft_read_fd(int fd, char *buf, char **rest, char **line)
 
 int			ft_call_reading(int ret, char **rest, char **line)
 {
-	if (*rest && (ret > 0 || **rest == '\0' || *rest == NULL))
+	if (*rest && (ret > 0 || **rest == '\0'))
 	{
 		if (!ret && *line)
 		{
@@ -110,18 +110,15 @@ int			get_next_line(int fd, char **line)
 	buf = NULL;
 	if (!line || fd < 0 || read(fd, rest, 0) < 0 || BUFFER_SIZE < 1)
 	{
-		if (!(*line = ft_strdup("")))
-			return (free_all(&rest, NULL, NULL));
+		*line = ft_strdup("");
 		return (free_all(&rest, NULL, NULL));
 	}
 	if (!rest)
-	{
 		if (!(rest = ft_strdup("")))
 			return (free_all(&rest, NULL, NULL));
+	if(!*line)
 		if (!(*line = ft_strdup("")))
 			return (free_all(&rest, NULL, NULL));
-		free(*line);
-	}
 	if ((ret = check_newline(&rest, line, buf)))
 		return ((ret == -1) ? ret : 1);
 	ret = ft_read_fd(fd, buf, &rest, line);
