@@ -6,7 +6,7 @@
 /*   By: priviere <priviere@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 12:43:11 by priviere     #+#   ##    ##    #+#       */
-/*   Updated: 2019/12/01 14:30:40 by priviere    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/06 18:04:21 by priviere    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -75,7 +75,7 @@ int			ft_call_reading(int ret, char **rest, char **line)
 {
 	if (*rest && (ret > 0 || **rest == '\0'))
 	{
-		if (!ret && *line)
+		if (!ret)
 		{
 			if (!(*line = ft_strdup("")))
 				return (free_all(rest, NULL, NULL));
@@ -109,15 +109,9 @@ int			get_next_line(int fd, char **line)
 
 	buf = NULL;
 	if (!line || fd < 0 || read(fd, rest, 0) < 0 || BUFFER_SIZE < 1)
-	{
-		*line = ft_strdup("");
-		return (free_all(&rest, NULL, NULL));
-	}
+		return (-1);
 	if (!rest)
 		if (!(rest = ft_strdup("")))
-			return (free_all(&rest, NULL, NULL));
-	if(!*line)
-		if (!(*line = ft_strdup("")))
 			return (free_all(&rest, NULL, NULL));
 	if ((ret = check_newline(&rest, line, buf)))
 		return ((ret == -1) ? ret : 1);
